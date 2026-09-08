@@ -21,6 +21,10 @@ the time bound for the complemented answer.
 Following Lax's format, the concept package declares the closure statement as
 an axiom. The proof package proves that statement without assuming it.
 
+The [formalization audit](AUDIT.md) explains the machine semantics, finiteness
+conditions, and scope of the model comparison. Its independent Lean checks
+are in [audit/Checks.lean](audit/Checks.lean).
+
 From this directory, run the complete archive checks, including kernel replay:
 
 ```sh
