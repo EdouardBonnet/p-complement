@@ -6,10 +6,10 @@ import Mathlib.Computability.TuringMachine.PostTuringMachine
 title: Finite-stack and elementary single-tape definitions of P
 type: definition
 ---
-These definitions specify machine models independently. `FiniteStackP` requires
-every stack alphabet to be finite. `SingleTapeP` uses an elementary deterministic
-single-tape machine: each transition either moves the head one square or writes
-one symbol. Both its alphabet and control-state type are finite. The input is
+The finite-stack class requires every stack alphabet to be finite. The
+single-tape class uses a deterministic machine whose transitions each move
+the head one square or write one symbol. Its alphabet and control states
+are finite. The input is
 written in its original order, starting at the head, with blank tape elsewhere.
 The two input symbols are distinct and different from blank. A halted control
 state determines the Boolean answer; work tape need not be erased.

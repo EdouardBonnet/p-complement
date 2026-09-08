@@ -25,11 +25,16 @@ the time bound for the complemented answer.
 - [Complement closure statement](concepts/Lax554803/ComplementClosure.lean)
 - [Machine construction and proof](proofs/Lax554803Proofs/ComplementClosure.lean)
 - [Independent machine models](concepts/Lax554803/MachineModels.lean)
-- [Model equivalence statements](concepts/Lax554803/ModelEquivalence.lean)
+- [Finite stack alphabets suffice](concepts/Lax554803/FiniteStackEquivalence.lean)
+- [Single-tape characterization](concepts/Lax554803/ModelEquivalence.lean)
+- [Single-tape complement closure](concepts/Lax554803/SingleTapeComplement.lean)
 - [Model equivalence proofs and single-tape complement closure](proofs/Lax554803Proofs/ModelEquivalence.lean)
 
-Following Lax's format, the concept package declares the closure statement as
-an axiom. The proof package proves that statement without assuming it.
+Following Lax's format, the concept package declares statements as axioms.
+The proof package proves all four statements. The proof network records
+finite-alphabet reduction before model equivalence, then model equivalence
+and complement closure before single-tape complement closure. All statement
+dependencies are discharged by proofs in this submission.
 
 The [formalization audit](AUDIT.md) explains the machine semantics, finiteness
 conditions, and proved time bounds. Its independent Lean checks

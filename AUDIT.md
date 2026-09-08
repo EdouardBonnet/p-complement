@@ -169,7 +169,11 @@ statement is therefore not being validated only in an empty class.
 The original definition, machine transformation, and closure theorem each
 use only `propext` and `Quot.sound`. The new model equivalences also use the
 permitted `Classical.choice`, for example to choose finite representations.
-None of the proofs assumes its concept-package statement. No result uses
+The compiler proofs and `singleTapeP_eq_P_closed` use no concept-statement
+axioms. The annotated archive proofs cite previously proved concept statements
+to expose the mathematical dependencies in Lax's proof network; every such
+dependency is discharged within this submission. No proof assumes its own
+conclusion, and there are no dependency cycles. No result uses
 `sorryAx` or the general polynomial-time composition claim marked
 `proof_wanted` in the pinned mathlib source.
 

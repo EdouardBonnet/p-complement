@@ -252,8 +252,7 @@ theorem nontrivial_language_in_singleTapeP :
       ([] : Word) ∉ L ∧ [false] ∈ L := by
   obtain ⟨L, hL, hn, hy⟩ := nontrivial_language_in_P
   refine ⟨L, ?_, hn, hy⟩
-  rw [Lax554803Proofs.ModelEquivalence.singleTapeP_eq_P]
-  exact hL
+  exact Lax554803Proofs.StackToTape.P_subset_singleTapeP hL
 
 #print axioms operational_spec
 #print axioms required_output_is_terminal
@@ -270,6 +269,7 @@ theorem nontrivial_language_in_singleTapeP :
 #print axioms Lax554803Proofs.StackToTape.P_subset_singleTapeP
 #print axioms Lax554803Proofs.TapeToStack.singleTapeP_subset_P
 #print axioms Lax554803Proofs.ModelEquivalence.finiteStackP_eq_P
+#print axioms Lax554803Proofs.ModelEquivalence.singleTapeP_eq_P_closed
 #print axioms Lax554803Proofs.ModelEquivalence.singleTapeP_eq_P
 #print axioms Lax554803Proofs.ModelEquivalence.singleTape_closed_under_complement
 #print axioms singleTape_direct_complement

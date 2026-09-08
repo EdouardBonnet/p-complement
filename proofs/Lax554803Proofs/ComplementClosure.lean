@@ -24,17 +24,9 @@ def negateOutput {f : Word → Bool}
 ---
 conclusion: Lax554803.ComplementClosure.closed_under_complement
 ---
-Negate the characteristic function of the language. Exchanging the two
-output-symbol interpretations of its Turing machine computes this negated
-function with the same execution and polynomial bound.
-
-# Proof strategy
-
-Compose the machine's output-alphabet equivalence with Boolean negation.
-The physical output encoding of the negated answer is then exactly the
-original output encoding, so the existing bound on the run applies directly.
-Negating the characteristic function's correctness equivalence identifies
-the decided language with the complement.
+Compose the output-alphabet equivalence with Boolean negation. The same
+machine execution then computes the complemented answer with the same time
+bound. Negating the correctness equivalence identifies the complement language.
 -/
 theorem closed_under_complement (L : Language) : L ∈ P → Lᶜ ∈ P := by
   rintro ⟨f, hf, ⟨M⟩⟩

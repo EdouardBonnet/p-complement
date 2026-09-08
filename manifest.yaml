@@ -5,5 +5,8 @@ mathlibVersion: "c5ea00351c28e24afc9f0f84379aa41082b1188f"
 title: "Polynomial Time and Closure under Complement"
 authors:
   - name: Édouard Bonnet
-  - name: Codex
+  - name: gpt-6-astra max
 bibEntries: []
+issue:
+  repositoryId: 1320232165
+  number: 85
