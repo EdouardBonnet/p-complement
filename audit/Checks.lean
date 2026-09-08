@@ -231,6 +231,30 @@ theorem nontrivial_language_in_P :
   refine ⟨{w | parityFrom false w = true}, ?_, by decide, by decide⟩
   exact ⟨parityFrom false, fun _ ↦ Iff.rfl, ⟨parityComputer⟩⟩
 
+/-- Independently check complement closure directly in the elementary-tape
+definition, by exchanging accepting and rejecting states. -/
+theorem singleTape_direct_complement (L : Language)
+    (h : L ∈ Lax554803.MachineModels.SingleTapeP) :
+    Lᶜ ∈ Lax554803.MachineModels.SingleTapeP := by
+  obtain ⟨M, p, hM⟩ := h
+  let N : Lax554803.MachineModels.SingleTape :=
+    { M with accept := fun q ↦ !(M.accept q) }
+  refine ⟨N, p, fun w ↦ ?_⟩
+  obtain ⟨c, hr, hh, ha⟩ := hM w
+  refine ⟨c, hr, hh, ?_⟩
+  change (Bool.not (M.accept c.q) = true) ↔ w ∉ L
+  rw [← ha]
+  cases M.accept c.q <;> decide
+
+/-- The conventional single-tape class contains a language with both answers. -/
+theorem nontrivial_language_in_singleTapeP :
+    ∃ L : Language, L ∈ Lax554803.MachineModels.SingleTapeP ∧
+      ([] : Word) ∉ L ∧ [false] ∈ L := by
+  obtain ⟨L, hL, hn, hy⟩ := nontrivial_language_in_P
+  refine ⟨L, ?_, hn, hy⟩
+  rw [Lax554803Proofs.ModelEquivalence.singleTapeP_eq_P]
+  exact hL
+
 #print axioms operational_spec
 #print axioms required_output_is_terminal
 #print axioms negative_answers
@@ -241,5 +265,14 @@ theorem nontrivial_language_in_P :
 #print axioms Lax554803.PolynomialTime.P
 #print axioms Lax554803Proofs.negateOutput
 #print axioms Lax554803Proofs.closed_under_complement
+#print axioms Lax554803.MachineModels.SingleTapeP
+#print axioms Lax554803Proofs.FiniteAlphabet.computer
+#print axioms Lax554803Proofs.StackToTape.P_subset_singleTapeP
+#print axioms Lax554803Proofs.TapeToStack.singleTapeP_subset_P
+#print axioms Lax554803Proofs.ModelEquivalence.finiteStackP_eq_P
+#print axioms Lax554803Proofs.ModelEquivalence.singleTapeP_eq_P
+#print axioms Lax554803Proofs.ModelEquivalence.singleTape_closed_under_complement
+#print axioms singleTape_direct_complement
+#print axioms nontrivial_language_in_singleTapeP
 
 end Audit

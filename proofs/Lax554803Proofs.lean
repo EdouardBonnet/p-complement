@@ -1,1 +1,11 @@
 import Lax554803Proofs.ComplementClosure
+import Lax554803Proofs.FiniteAlphabet
+import Lax554803Proofs.FiniteControl
+import Lax554803Proofs.ModelEquivalence
+import Lax554803Proofs.PostTime
+import Lax554803Proofs.StackTime
+import Lax554803Proofs.StackToTape
+import Lax554803Proofs.TapeInput
+import Lax554803Proofs.TapeOutput
+import Lax554803Proofs.TapeToStack
+import Lax554803Proofs.Time

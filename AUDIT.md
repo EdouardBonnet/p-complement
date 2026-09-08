@@ -1,14 +1,14 @@
 **Formalization audit of lax-554803**
 
-Audited the definition and proof at source commit
-`89d8425ede159c7586f942a5f7580fa91bed434d`, together with their actual
-dependencies in the pinned mathlib checkout. The local mathlib commit matches
-the manifest: `c5ea00351c28e24afc9f0f84379aa41082b1188f`, under Lean `v4.30.0`.
+The original definition and complement proof were audited at source commit
+`89d8425ede159c7586f942a5f7580fa91bed434d`. This report also covers the subsequent
+formal model-equivalence development. The local mathlib commit matches the
+manifest: `c5ea00351c28e24afc9f0f84379aa41082b1188f`, under Lean `v4.30.0`.
 
-No correctness defect was found in the definition of P or the complement
-proof. The original concept and proof files are unchanged. The distinction
-between a theorem checked by Lean and the mathematical identification of the
-chosen machine model with textbook P is described below.
+The original definition and complement argument are retained. The former
+scope limitation is resolved: both inclusions between that class and an
+independently defined elementary single-tape P are now proved in Lean,
+including polynomial time bounds and both input/output conventions.
 
 **Uniformity and the decision problem.**
 The definition chooses one function and one machine witness before quantifying
@@ -57,11 +57,14 @@ finite. There are finitely many instructions in each program body and finitely
 many program labels. Induction through `stepAux` and reachability proves the
 invariant; `pop`, `peek`, `load`, and branching introduce no additional symbols.
 
-Consequently, restricting the instruction functions to the symbols and states
-that can occur gives finite lookup tables. The potentially infinite ambient
-types do not provide an oracle or unbounded integer arithmetic. The finite
-support invariant is checked by Lean; the compilation to lookup tables is the
-mathematical consequence used in this audit.
+The submission now also constructs the restricted machine in
+[FiniteAlphabet.lean](proofs/Lax554803Proofs/FiniteAlphabet.lean). It retains the
+input/output alphabets and all pushed symbols, and uses their subtypes as the
+new stack alphabets. Its `block`, `step`, and `outputs` theorems prove that
+decoding commutes with execution and preserves the exact transition count.
+The `computer` theorem preserves the original time polynomial. This yields
+the exported equality `finiteStackP_eq_P`; finite alphabets are no longer
+just an informal consequence of the reachability invariant.
 
 **Instruction blocks and the cleanup convention.**
 One mathlib transition executes a finite statement body. The recursive calls
@@ -79,10 +82,65 @@ costs polynomial time. This argument concerns membership in P; it does not
 assert equality of exact running times between different machine conventions.
 
 The standard simulations use two stacks for a tape, and tracks of a tape for
-a fixed collection of stacks. Combining those constructions with the bounds
-above gives polynomial overhead in both directions. This is the audit's
-complexity analysis of the constructions in
+a fixed collection of stacks; see
 [Watrous, Lecture 14, §14.2](https://cs.uwaterloo.ca/~watrous/ToC-notes/ToC-notes.14.pdf).
+The bounds needed here are now theorems of the submission, as detailed next.
+
+**Independent single-tape definition.**
+[MachineModels.lean](concepts/Lax554803/MachineModels.lean) defines `SingleTape`
+using mathlib's elementary `TM0`: a two-sided blank tape, a finite alphabet,
+a finite control-state type, and a transition function of the current state
+and scanned symbol. A transition writes one symbol or moves the head one
+square. Its input embedding maps the two bits injectively to nonblank
+symbols. `TM0.init` places them in their original order, with the first symbol
+under the head and blanks elsewhere. There is no preprocessing hidden in
+this embedding. A finite accepting-state predicate supplies the answer.
+
+`SingleTapeP` chooses one such machine and one polynomial before quantifying
+over words. On every word it requires a bounded run to a configuration whose
+next transition is `none`, with acceptance equivalent to membership. There is
+no requirement that its final work tape be erased. This definition contains
+no reference to the stack class or to a simulation certificate.
+
+**Formal simulations and time bounds.**
+Let `n` be the input length and `t` the source transition count. All constants
+below depend only on the fixed source machine.
+
+| Construction | Formal bound | Proof source |
+| --- | --- | --- |
+| Restrict work alphabets | Exactly `t` transitions | `FiniteAlphabet.outputs` |
+| Stacks to tape instruction blocks | `t * (1 + C * (2 * (n + t*C) + 2))` | `StackTime.run` |
+| Ordinary input preparation | At most `n + 1` tape blocks | `TapeInput.prepare` |
+| Expand tape blocks to elementary transitions | At most `D` transitions per block | `PostTime.run` |
+| Capture the final answer in an accepting state | One transition | `TapeOutput.finish` |
+| Restrict to an actual finite control type | Exactly the same transition count | `FiniteControl.run` |
+| Single tape to stacks, including input and cleanup | At most `3*n + 2*t + 6` | `TapeToStack.outputs` |
+
+The stack-to-tape construction reuses mathlib's track simulator. Its timed
+proof bounds both the scan to each stack top and the return to the bottom
+marker. `TapeInput` proves that reflecting the simulated tape permits a
+single input scan, rather than assuming the input was supplied in reverse
+order. It treats the empty word separately. The existing block-to-elementary
+compiler is given a proved constant bound over its finite support. The final
+output bit is read into a control state, and the state space is restricted
+to the proved finite support.
+
+The complete forward bound is
+`D * (n + 1 + t * (1 + C * (2 * (n + t*C) + 2))) + 1`.
+Substituting the source polynomial for `t` gives the explicit polynomial used
+in [StackToTape.lean](proofs/Lax554803Proofs/StackToTape.lean).
+
+In the reverse construction, two stacks represent the squares to the left
+and right of the head; the current square and control state are in the finite
+store. Each elementary transition is simulated in one stack transition. The
+sum of the two stack lengths grows by at most one per transition. Input
+conversion costs `2*n + 3` transitions. Cleanup erases both work stacks,
+resets the store, and writes the singleton answer on the Boolean I/O stack.
+The resulting polynomial is `3*X + 2*p + 6`, proved in
+[TapeToStack.lean](proofs/Lax554803Proofs/TapeToStack.lean).
+
+The equalities and the transported single-tape complement theorem are
+exported by [ModelEquivalence.lean](proofs/Lax554803Proofs/ModelEquivalence.lean).
 
 **Complement construction.**
 Let `e` be the original output-alphabet equivalence. The new witness uses
@@ -108,22 +166,28 @@ including the final cleanup. This gives `nontrivial_language_in_P`: a language
 in P that rejects the empty word and accepts a one-bit word. The closure
 statement is therefore not being validated only in an empty class.
 
-The submitted definition, machine transformation, and closure theorem each
-use only `propext` and `Quot.sound`. In particular, the closure theorem does
-not assume its concept-package statement. Some independent audit lemmas also
-use the permitted `Classical.choice`. No audit lemma uses an unproved
-statement. The general polynomial-time composition claim marked
-`proof_wanted` in the pinned mathlib source is not used.
+The original definition, machine transformation, and closure theorem each
+use only `propext` and `Quot.sound`. The new model equivalences also use the
+permitted `Classical.choice`, for example to choose finite representations.
+None of the proofs assumes its concept-package statement. No result uses
+`sorryAx` or the general polynomial-time composition claim marked
+`proof_wanted` in the pinned mathlib source.
 
-**What is and is not formally certified.**
-Lean certifies complement closure for the precise mathlib-based definition.
-The additional audit file certifies the operational interpretation, terminal
-output, finite reachable alphabet, and a nonconstant polynomial-time example.
-The complete two-way polynomial simulation between this interface and a
-separately defined textbook single-tape P, including cleanup, is not a theorem
-of this submission. Its justification above is mathematical audit reasoning.
-This is a limit on the extent of the formal development, not an outstanding
-proof obligation of the submitted complement theorem.
+The independent audit also proves complement closure directly in
+`SingleTapeP` by negating its accepting-state predicate with the same machine
+and polynomial. It transfers the nonconstant parity language to this class,
+checking that both accepting and rejecting instances exist. The audit prints
+the axiom dependencies of both compiler directions, both class equalities,
+and both complement arguments.
+
+**Certified results.**
+Lean certifies the two class equalities and complement closure for both the
+original stack definition and the independent elementary single-tape
+definition. The input preparation, finite alphabets and control, simulation
+time bounds, final acceptance, and cleanup are included in those proofs.
+The separate audit file additionally checks the operational interpretation
+and nonconstant examples. The submission does not rely on an informal
+stack/tape equivalence to identify these two definitions.
 
 The independent checks can be reproduced from `proofs/`:
 

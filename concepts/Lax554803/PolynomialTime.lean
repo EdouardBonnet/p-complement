@@ -27,6 +27,10 @@ such a machine exists.
 Mathlib's machine has finitely many stacks, control states, and program
 labels. Its time measure counts transitions, each executing one of the
 fixed finite instruction blocks of the program.
+
+`Lax554803.MachineModels` independently defines elementary single-tape P.
+The polynomial-time equivalence, including input preparation and cleanup,
+is formalized in `Lax554803.ModelEquivalence`.
 -/
 
 namespace Lax554803.PolynomialTime

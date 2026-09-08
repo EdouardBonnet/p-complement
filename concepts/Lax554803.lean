@@ -1,2 +1,4 @@
 import Lax554803.PolynomialTime
 import Lax554803.ComplementClosure
+import Lax554803.MachineModels
+import Lax554803.ModelEquivalence

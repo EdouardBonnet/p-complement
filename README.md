@@ -9,6 +9,13 @@ a polynomial bound in the input length. The definition uses mathlib's
 `Turing.TM2ComputableInPolyTime`, with the identity input encoding and a
 singleton Boolean output encoding.
 
+The submission also defines elementary single-tape P independently and proves
+that it equals the original P. Its machines have finite alphabets and control
+states, read binary input in its original order, and execute one move or write
+per transition. The proof includes both compilers and their polynomial bounds,
+including input preparation and output cleanup. A further equality shows that
+requiring finite alphabets at every work stack does not change P.
+
 The complement construction composes the output-alphabet equivalence with
 Boolean negation. It preserves the underlying machine, the input encoding,
 and the time polynomial. The existing execution certificate therefore proves
@@ -17,12 +24,15 @@ the time bound for the complemented answer.
 - [Definition of P](concepts/Lax554803/PolynomialTime.lean)
 - [Complement closure statement](concepts/Lax554803/ComplementClosure.lean)
 - [Machine construction and proof](proofs/Lax554803Proofs/ComplementClosure.lean)
+- [Independent machine models](concepts/Lax554803/MachineModels.lean)
+- [Model equivalence statements](concepts/Lax554803/ModelEquivalence.lean)
+- [Model equivalence proofs and single-tape complement closure](proofs/Lax554803Proofs/ModelEquivalence.lean)
 
 Following Lax's format, the concept package declares the closure statement as
 an axiom. The proof package proves that statement without assuming it.
 
 The [formalization audit](AUDIT.md) explains the machine semantics, finiteness
-conditions, and scope of the model comparison. Its independent Lean checks
+conditions, and proved time bounds. Its independent Lean checks
 are in [audit/Checks.lean](audit/Checks.lean).
 
 From this directory, run the complete archive checks, including kernel replay:
