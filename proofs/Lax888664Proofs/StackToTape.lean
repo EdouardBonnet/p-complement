@@ -1,13 +1,15 @@
-import Lax554803Proofs.FiniteAlphabet
-import Lax554803Proofs.TapeInput
-import Lax554803Proofs.TapeOutput
+import Lax888664Proofs.FiniteAlphabet
+import Lax888664Proofs.TapeInput
+import Lax888664Proofs.TapeOutput
 import Mathlib.Tactic.GCongr
+
+set_option backward.isDefEq.respectTransparency false
 
 /-! Polynomial-time stack deciders compiled to ordinary elementary single-tape deciders. -/
 
-namespace Lax554803Proofs.StackToTape
+namespace Lax888664Proofs.StackToTape
 
-open Turing Time TM2to1 Lax554803.MachineModels
+open Turing Time TM2to1 Lax888664.MachineModels
 
 theorem supports_univ {K : Type} {Γ : K → Type} {Λ σ : Type}
     [Fintype Λ] [Inhabited Λ] (M : Λ → TM2.Stmt Γ Λ σ) :
@@ -37,7 +39,7 @@ theorem output_relation (tm : FinTM2) (b : tm.Γ tm.k₁)
   | mk T hT =>
     refine ⟨rfl, ?_⟩
     have he := stk_nth_val 0 (hT tm.k₁)
-    simpa [haltList, ListBlank.nth_zero, Tape.mk'_head, addBottom] using he
+    simpa [haltList, ListBlank.nth_zero, Tape.mk'_head, addBottom] using! he
 
 /-- The finite-alphabet stack model is simulated by a conventional single tape. -/
 theorem finiteStackP_subset_singleTapeP : FiniteStackP ⊆ SingleTapeP := by
@@ -108,7 +110,7 @@ theorem finiteStackP_subset_singleTapeP : FiniteStackP ⊆ SingleTapeP := by
       apply Nat.add_le_add hr
       apply ht.trans
       gcongr <;> exact hn
-    · simpa only [u, input, List.map_map] using hall
+    · simpa only [u, input, List.map_map] using! hall
   obtain ⟨r, hr, hmacro⟩ := hmrun
   have hstart : (TM1.init (w.map input) : TM1.Cfg A (Sum Bool Q) tm.σ).l ∈
       Finset.insertNone S' := Finset.some_mem_insertNone.mpr hS'.1
@@ -125,8 +127,8 @@ theorem finiteStackP_subset_singleTapeP : FiniteStackP ⊆ SingleTapeP := by
     simpa only [hout.2, Option.map_some, Equiv.apply_symm_apply, Option.getD_some] using hf w
 
 /-- The original definition of P implies elementary single-tape polynomial time. -/
-theorem P_subset_singleTapeP : Lax554803.PolynomialTime.P ⊆ SingleTapeP := by
+theorem P_subset_singleTapeP : Lax888664.PolynomialTime.P ⊆ SingleTapeP := by
   rw [← FiniteAlphabet.finiteStackP_eq_P]
   exact finiteStackP_subset_singleTapeP
 
-end Lax554803Proofs.StackToTape
+end Lax888664Proofs.StackToTape

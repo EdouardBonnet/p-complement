@@ -1,14 +1,16 @@
-import Lax554803Proofs.Time
-import Lax554803.MachineModels
+import Lax888664Proofs.Time
+import Lax888664.MachineModels
 import Mathlib.Tactic.DeriveFintype
 import Mathlib.Tactic.Linarith
+
+set_option backward.isDefEq.respectTransparency false
 
 /-! Simulate an elementary single tape by its left and right stacks.
 Input conversion and final erasure are included in the time bound. -/
 
-namespace Lax554803Proofs.TapeToStack
+namespace Lax888664Proofs.TapeToStack
 
-open Turing Time Lax554803.MachineModels
+open Turing Time Lax888664.MachineModels
 
 inductive Slot | io | left | right deriving DecidableEq, Fintype
 inductive Label | readInput | reverseInput | start | simulate | clearLeft | clearRight
@@ -129,7 +131,6 @@ theorem write (M : SingleTape) (q q' : M.Q) (a b : M.Γ) (L R : List M.Γ)
     (h : M.transition q a = some (q', .write b)) :
     (machine M).step (simCfg M q a L R) = some (simCfg M q' b L R) := by
   simp [FinTM2.step, machine, program, simCfg, cfg, TM2.step, TM2.stepAux, next, h]
-  rfl
 
 /-- One elementary tape transition is exactly one stack transition. -/
 theorem step (M : SingleTape) (q : M.Q) (a : M.Γ) (L R : List M.Γ)
@@ -186,8 +187,6 @@ theorem read_nil (M : SingleTape) (v : Store M.Q M.Γ) (L R : List M.Γ) :
     (machine M).step (cfg M .readInput v [] L R) =
       some (cfg M .reverseInput {v with head := M.input false, present := false} [] L R) := by
   simp [FinTM2.step, machine, program, cfg, TM2.step, TM2.stepAux, tapes]
-  congr 2
-  funext k; cases k <;> rfl
 
 theorem read_run (M : SingleTape) (v : Store M.Q M.Γ)
     (w : List Bool) (L R : List M.Γ) :
@@ -198,7 +197,7 @@ theorem read_run (M : SingleTape) (v : Store M.Q M.Γ)
   | nil => exact .one (read_nil M v L R)
   | cons b w ih =>
     simpa only [List.reverse_cons, List.map_append, List.map_cons, List.map_nil,
-      List.append_assoc, List.singleton_append] using
+      List.append_assoc, List.singleton_append] using!
       Run.cons (read_cons M v b w L R)
         (ih {v with head := M.input b, present := true} (M.input b :: L))
 
@@ -214,8 +213,6 @@ theorem reverse_nil (M : SingleTape) (v : Store M.Q M.Γ) (R : List M.Γ) :
     (machine M).step (cfg M .reverseInput v [] [] R) =
       some (cfg M .start {v with head := default, present := false} [] [] R) := by
   simp [FinTM2.step, machine, program, cfg, TM2.step, TM2.stepAux, tapes]
-  congr 2
-  funext k; cases k <;> rfl
 
 theorem reverse_run (M : SingleTape) (v : Store M.Q M.Γ) (L R : List M.Γ) :
     Run (machine M).step (L.length + 1) (cfg M .reverseInput v [] L R)
@@ -223,7 +220,7 @@ theorem reverse_run (M : SingleTape) (v : Store M.Q M.Γ) (L R : List M.Γ) :
   induction L generalizing v R with
   | nil => exact .one (reverse_nil M v R)
   | cons a L ih =>
-    simpa only [List.reverse_cons, List.append_assoc, List.singleton_append] using
+    simpa only [List.reverse_cons, List.append_assoc, List.singleton_append] using!
       Run.cons (reverse_cons M v a L R) (ih {v with head := a, present := true} (a :: R))
 
 theorem start (M : SingleTape) (v : Store M.Q M.Γ) (R : List M.Γ) :
@@ -262,7 +259,6 @@ theorem finish (M : SingleTape) (q : M.Q) (a : M.Γ) (L R : List M.Γ)
     (machine M).step (simCfg M q a L R) =
       some (cfg M .clearLeft (cleanStore M (M.accept q) false) [] L R) := by
   simp [FinTM2.step, machine, program, simCfg, cfg, TM2.step, TM2.stepAux, h, cleanStore]
-  rfl
 
 theorem clear_left_cons (M : SingleTape) (b p : Bool) (a : M.Γ) (L R : List M.Γ) :
     (machine M).step (cfg M .clearLeft (cleanStore M b p) [] (a :: L) R) =
@@ -275,8 +271,6 @@ theorem clear_left_nil (M : SingleTape) (b p : Bool) (R : List M.Γ) :
     (machine M).step (cfg M .clearLeft (cleanStore M b p) [] [] R) =
       some (cfg M .clearRight (cleanStore M b false) [] [] R) := by
   simp [FinTM2.step, machine, program, cfg, TM2.step, TM2.stepAux, cleanStore, tapes]
-  congr 2
-  funext k; cases k <;> rfl
 
 theorem clear_left (M : SingleTape) (b p : Bool) (L R : List M.Γ) :
     Run (machine M).step (L.length + 1) (cfg M .clearLeft (cleanStore M b p) [] L R)
@@ -330,7 +324,7 @@ theorem outputs (M : SingleTape) (w : List Bool) {n : ℕ} {c : TM0.Cfg M.Γ M.Q
   omega
 
 /-- Elementary single-tape polynomial time implies the original stack definition of P. -/
-theorem singleTapeP_subset_P : SingleTapeP ⊆ Lax554803.PolynomialTime.P := by
+theorem singleTapeP_subset_P : SingleTapeP ⊆ Lax888664.PolynomialTime.P := by
   classical
   rintro L ⟨M, p, hM⟩
   let f : List Bool → Bool := fun w ↦ decide (w ∈ L)
@@ -359,4 +353,4 @@ theorem singleTapeP_subset_P : SingleTapeP ⊆ Lax554803.PolynomialTime.P := by
   rw [List.map_id]
   exact Within.evals (hrun w)
 
-end Lax554803Proofs.TapeToStack
+end Lax888664Proofs.TapeToStack

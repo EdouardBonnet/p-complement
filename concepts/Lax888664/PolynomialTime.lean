@@ -17,7 +17,7 @@ transitions of fixed finite instruction blocks. We also prove equivalence
 with elementary single-tape machines.
 -/
 
-namespace Lax554803.PolynomialTime
+namespace Lax888664.PolynomialTime
 
 /-- A finite binary string. -/
 abbrev Word := List Bool
@@ -31,4 +31,4 @@ def P : Set Language :=
     (∀ w, f w = true ↔ w ∈ L) ∧
     Nonempty (Turing.TM2ComputableInPolyTime id Computability.encodeBool f)}
 
-end Lax554803.PolynomialTime
+end Lax888664.PolynomialTime

@@ -1,12 +1,14 @@
-import Lax554803Proofs.Time
+import Lax888664Proofs.Time
 import Mathlib.Computability.TuringMachine.Computable
 import Mathlib.Data.Set.Finite.Lattice
-import Lax554803.MachineModels
+import Lax888664.MachineModels
+
+set_option backward.isDefEq.respectTransparency false
 
 /-! Restrict every stack to a finite alphabet, preserving each transition exactly.
 Only symbols that can be pushed, or occur in input/output, are retained. -/
 
-namespace Lax554803Proofs.FiniteAlphabet
+namespace Lax888664Proofs.FiniteAlphabet
 
 open Turing Function Time
 
@@ -178,7 +180,6 @@ theorem init_decode (tm : FinTM2) [Finite (tm.Γ tm.k₁)] (w : List (tm.Γ tm.k
     | nil => rfl
     | cons a w ih => exact congrArg (List.cons a) ih
   · simp [decodeStacks, initList, restrict, h]
-    rfl
 
 theorem halt_decode (tm : FinTM2) [Finite (tm.Γ tm.k₁)] (w : List (tm.Γ tm.k₁)) :
     decodeCfg (symbols tm) (haltList (restrict tm) (w.map (outputEquiv tm).symm)) =
@@ -193,7 +194,6 @@ theorem halt_decode (tm : FinTM2) [Finite (tm.Γ tm.k₁)] (w : List (tm.Γ tm.k
     | nil => rfl
     | cons a w ih => exact congrArg (List.cons a) ih
   · simp [decodeStacks, haltList, restrict, h]
-    rfl
 
 /-- The finite-alphabet machine computes the same output in exactly the same number of steps. -/
 theorem outputs (tm : FinTM2) [Finite (tm.Γ tm.k₁)]
@@ -225,12 +225,12 @@ theorem computer {f : List Bool → Bool}
             have hr := outputs M.tm (w.map M.inputAlphabet.symm)
               [M.outputAlphabet.symm (f w)] (M.outputsFun w).steps
               (Run.of_iterate (M.outputsFun w).evals_in_steps)
-            simpa only [List.map_map, List.map_cons, List.map_nil] using hr.iterate } }
+            simpa only [List.map_map, List.map_cons, List.map_nil] using! hr.iterate } }
   exact ⟨N, rfl, restrict_finite M.tm⟩
 
 /-- Requiring finite work alphabets does not change the language class. -/
 theorem finiteStackP_eq_P :
-    Lax554803.MachineModels.FiniteStackP = Lax554803.PolynomialTime.P := by
+    Lax888664.MachineModels.FiniteStackP = Lax888664.PolynomialTime.P := by
   ext L
   constructor
   · rintro ⟨f, M, hf, _⟩
@@ -239,4 +239,4 @@ theorem finiteStackP_eq_P :
     obtain ⟨N, _, hN⟩ := computer M
     exact ⟨f, N, hf, hN⟩
 
-end Lax554803Proofs.FiniteAlphabet
+end Lax888664Proofs.FiniteAlphabet

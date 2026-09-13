@@ -4,14 +4,14 @@ Copyright (c) 2018 Mario Carneiro. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 The adaptations add explicit transition counts and whole-run bounds.
 -/
-import Lax554803Proofs.Time
+import Lax888664Proofs.Time
 import Mathlib.Computability.TuringMachine.Computable
 import Mathlib.Algebra.Order.BigOperators.Group.Finset
 import Mathlib.Tactic.Linarith
 
 /-! Quantitative correctness of mathlib's stack-to-single-tape simulator. -/
 
-namespace Lax554803Proofs.StackTime
+namespace Lax888664Proofs.StackTime
 
 open Turing Time Function TM2to1
 
@@ -219,4 +219,4 @@ theorem init_bound (tm : FinTM2) (w : List (tm.Γ tm.k₀)) :
   · subst k; simp [initList]
   · simp [initList, h]
 
-end Lax554803Proofs.StackTime
+end Lax888664Proofs.StackTime

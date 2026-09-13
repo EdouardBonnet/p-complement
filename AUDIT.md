@@ -1,4 +1,4 @@
-**Formalization audit of lax-554803**
+**Formalization audit of lax-888664**
 
 The original definition and complement proof were audited at source commit
 `89d8425ede159c7586f942a5f7580fa91bed434d`. This report also covers the subsequent
@@ -58,7 +58,7 @@ many program labels. Induction through `stepAux` and reachability proves the
 invariant; `pop`, `peek`, `load`, and branching introduce no additional symbols.
 
 The submission now also constructs the restricted machine in
-[FiniteAlphabet.lean](proofs/Lax554803Proofs/FiniteAlphabet.lean). It retains the
+[FiniteAlphabet.lean](proofs/Lax888664Proofs/FiniteAlphabet.lean). It retains the
 input/output alphabets and all pushed symbols, and uses their subtypes as the
 new stack alphabets. Its `block`, `step`, and `outputs` theorems prove that
 decoding commutes with execution and preserves the exact transition count.
@@ -87,7 +87,7 @@ a fixed collection of stacks; see
 The bounds needed here are now theorems of the submission, as detailed next.
 
 **Independent single-tape definition.**
-[MachineModels.lean](concepts/Lax554803/MachineModels.lean) defines `SingleTape`
+[MachineModels.lean](concepts/Lax888664/MachineModels.lean) defines `SingleTape`
 using mathlib's elementary `TM0`: a two-sided blank tape, a finite alphabet,
 a finite control-state type, and a transition function of the current state
 and scanned symbol. A transition writes one symbol or moves the head one
@@ -128,7 +128,7 @@ to the proved finite support.
 The complete forward bound is
 `D * (n + 1 + t * (1 + C * (2 * (n + t*C) + 2))) + 1`.
 Substituting the source polynomial for `t` gives the explicit polynomial used
-in [StackToTape.lean](proofs/Lax554803Proofs/StackToTape.lean).
+in [StackToTape.lean](proofs/Lax888664Proofs/StackToTape.lean).
 
 In the reverse construction, two stacks represent the squares to the left
 and right of the head; the current square and control state are in the finite
@@ -137,10 +137,10 @@ sum of the two stack lengths grows by at most one per transition. Input
 conversion costs `2*n + 3` transitions. Cleanup erases both work stacks,
 resets the store, and writes the singleton answer on the Boolean I/O stack.
 The resulting polynomial is `3*X + 2*p + 6`, proved in
-[TapeToStack.lean](proofs/Lax554803Proofs/TapeToStack.lean).
+[TapeToStack.lean](proofs/Lax888664Proofs/TapeToStack.lean).
 
 The equalities and the transported single-tape complement theorem are
-exported by [ModelEquivalence.lean](proofs/Lax554803Proofs/ModelEquivalence.lean).
+exported by [ModelEquivalence.lean](proofs/Lax888664Proofs/ModelEquivalence.lean).
 
 **Complement construction.**
 Let `e` be the original output-alphabet equivalence. The new witness uses

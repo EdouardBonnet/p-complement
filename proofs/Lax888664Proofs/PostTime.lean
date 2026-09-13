@@ -4,14 +4,14 @@ Copyright (c) 2018 Mario Carneiro. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 The adaptation adds explicit elementary-transition counts.
 -/
-import Lax554803Proofs.Time
+import Lax888664Proofs.Time
 import Mathlib.Computability.TuringMachine.PostTuringMachine
 import Mathlib.Algebra.Order.BigOperators.Group.Finset
 
 /-! The existing TM1 → TM0 compiler has constant time overhead.
 This supplies the quantitative statement missing from its untimed correctness theorem. -/
 
-namespace Lax554803Proofs.PostTime
+namespace Lax888664Proofs.PostTime
 
 open Turing Time
 
@@ -104,4 +104,4 @@ theorem run {S : Finset Λ} (hs : TM1.Supports M S) {n : ℕ}
 theorem halted (v : σ) (T : Tape Γ) :
     TM0.step (TM1to0.tr M) (TM1to0.trCfg M ⟨none, v, T⟩) = none := rfl
 
-end Lax554803Proofs.PostTime
+end Lax888664Proofs.PostTime

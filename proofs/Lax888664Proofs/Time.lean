@@ -3,7 +3,7 @@ import Lean.Elab.Tactic.Omega
 
 /-! Finite runs, with explicit transition counts, used by the machine simulations. -/
 
-namespace Lax554803Proofs.Time
+namespace Lax888664Proofs.Time
 
 variable {α β : Type*}
 
@@ -134,4 +134,4 @@ theorem simulate_constant {step : α → Option α} {step' : β → Option β}
     obtain ⟨b', hb', ht⟩ := ih hc'
     exact ⟨b', hb', (hr.trans ht).mono (by simp [Nat.add_mul, Nat.add_comm])⟩
 
-end Lax554803Proofs.Time
+end Lax888664Proofs.Time

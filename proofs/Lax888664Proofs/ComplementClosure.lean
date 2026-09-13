@@ -1,9 +1,11 @@
-import Lax554803.ComplementClosure
+import Lax888664.ComplementClosure
 import Mathlib.Logic.Equiv.Bool
 
-namespace Lax554803Proofs
+set_option backward.isDefEq.respectTransparency false
 
-open Lax554803.PolynomialTime
+namespace Lax888664Proofs
+
+open Lax888664.PolynomialTime
 
 /-- Exchange the two output-symbol interpretations, retaining the machine and its time bound. -/
 def negateOutput {f : Word → Bool}
@@ -18,11 +20,11 @@ def negateOutput {f : Word → Bool}
       (List.map M.inputAlphabet.invFun w)
       (some [M.outputAlphabet.invFun (!(!(f w)))]) (M.time.eval w.length)
     simpa only [Computability.encodeBool, List.map_cons, List.map_nil, Bool.not_not]
-      using M.outputsFun w
+      using! M.outputsFun w
 
 /--
 ---
-conclusion: Lax554803.ComplementClosure.closed_under_complement
+conclusion: Lax888664.ComplementClosure.closed_under_complement
 ---
 Compose the output-alphabet equivalence with Boolean negation. The same
 machine execution then computes the complemented answer with the same time
@@ -36,4 +38,4 @@ theorem closed_under_complement (L : Language) : L ∈ P → Lᶜ ∈ P := by
   rw [← hf w]
   cases f w <;> decide
 
-end Lax554803Proofs
+end Lax888664Proofs

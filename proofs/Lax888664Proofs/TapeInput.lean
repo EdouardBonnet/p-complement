@@ -1,10 +1,12 @@
-import Lax554803Proofs.StackTime
-import Lax554803Proofs.PostTime
+import Lax888664Proofs.StackTime
+import Lax888664Proofs.PostTime
+
+set_option backward.isDefEq.respectTransparency false
 
 /-! Ordinary input preparation for the stack-to-tape simulator.
 Reflecting the simulated tape lets a single scan prepare input in its original order. -/
 
-namespace Lax554803Proofs.TapeInput
+namespace Lax888664Proofs.TapeInput
 
 open Turing Time Function
 
@@ -39,7 +41,7 @@ theorem block (f : Λ → Λ') (q : TM1.Stmt Γ Λ σ) (v : σ) (T : Tape Γ) :
     TM1.stepAux (stmt f q) v (mirror T) = cfg f (TM1.stepAux q v T) := by
   induction q generalizing v T with
   | move d q ih => simpa only [stmt, TM1.stepAux, mirror_move] using ih v (T.move d)
-  | write a q ih => simpa only [stmt, TM1.stepAux, mirror_write, mirror] using ih v (T.write (a T.head v))
+  | write a q ih => simpa only [stmt, TM1.stepAux, mirror_write, mirror] using! ih v (T.write (a T.head v))
   | load a q ih => exact ih _ _
   | branch p q r ihq ihr =>
     cases he : p T.head v
@@ -115,7 +117,7 @@ theorem scan (v : σ) (L R : List (Γ k)) :
         some ⟨some (.inl true), v, Tape.mk₂ ((a :: L).map (letter k)) (R.map (letter k))⟩ := by
       simp [TM1.step, program, TM1.stepAux, Tape.mk₂, Tape.mk',
         ListBlank.head_mk, ListBlank.tail_mk, letter, Tape.move, ListBlank.cons_mk]
-    simpa only [List.reverse_cons, List.append_assoc, List.singleton_append] using
+    simpa only [List.reverse_cons, List.append_assoc, List.singleton_append] using!
       Run.cons hs (ih (a :: L))
 
 theorem finish (v : σ) (w : List (Γ k)) (hw : w ≠ []) :
@@ -174,4 +176,4 @@ theorem program_supports [Inhabited Λ] {S : Finset Λ} (hS : TM1.Supports M S)
 
 end Prepare
 
-end Lax554803Proofs.TapeInput
+end Lax888664Proofs.TapeInput

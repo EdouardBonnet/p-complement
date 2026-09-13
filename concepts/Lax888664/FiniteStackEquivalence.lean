@@ -1,4 +1,4 @@
-import Lax554803.MachineModels
+import Lax888664.MachineModels
 
 /-!
 ---
@@ -8,11 +8,11 @@ type: theorem
 Requiring every work-stack alphabet to be finite leaves $\mathrm{P}$ unchanged.
 -/
 
-namespace Lax554803.FiniteStackEquivalence
+namespace Lax888664.FiniteStackEquivalence
 
 open PolynomialTime MachineModels
 
 /-- Requiring all work alphabets to be finite does not change P. -/
 axiom finiteStackP_eq_P : FiniteStackP = P
 
-end Lax554803.FiniteStackEquivalence
+end Lax888664.FiniteStackEquivalence

@@ -1,4 +1,4 @@
-import Lax554803.PolynomialTime
+import Lax888664.PolynomialTime
 import Mathlib.Computability.TuringMachine.PostTuringMachine
 
 /-!
@@ -15,7 +15,7 @@ The two input symbols are distinct and different from blank. A halted control
 state determines the Boolean answer; work tape need not be erased.
 -/
 
-namespace Lax554803.MachineModels
+namespace Lax888664.MachineModels
 
 open Turing PolynomialTime
 
@@ -49,4 +49,4 @@ def SingleTapeP : Set Language :=
         (TM0.init (w.map M.input)) (some c) (p.eval w.length)) ∧
       TM0.step M.transition c = none ∧ (M.accept c.q = true ↔ w ∈ L)}
 
-end Lax554803.MachineModels
+end Lax888664.MachineModels

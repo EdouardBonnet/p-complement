@@ -1,4 +1,4 @@
-import Lax554803.PolynomialTime
+import Lax888664.PolynomialTime
 
 /-!
 ---
@@ -10,11 +10,11 @@ also belongs to $\mathrm{P}$. The complement is taken in the set of all finite
 binary strings.
 -/
 
-namespace Lax554803.ComplementClosure
+namespace Lax888664.ComplementClosure
 
-open Lax554803.PolynomialTime
+open Lax888664.PolynomialTime
 
 /-- The complement of a polynomial-time decidable language is polynomial-time decidable. -/
 axiom closed_under_complement (L : Language) : L ∈ P → Lᶜ ∈ P
 
-end Lax554803.ComplementClosure
+end Lax888664.ComplementClosure

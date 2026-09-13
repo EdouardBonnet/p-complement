@@ -1,4 +1,4 @@
-import Lax554803Proofs
+import Lax888664Proofs
 import Mathlib.Data.Set.Finite.Lattice
 
 set_option autoImplicit false
@@ -12,7 +12,7 @@ Run from `proofs/`: `lake env lean ../audit/Checks.lean`.
 
 namespace Audit
 
-open Lax554803.PolynomialTime Turing
+open Lax888664.PolynomialTime Turing
 
 /-- Unpack the definition all the way to a bounded sequence of transitions. -/
 theorem operational_spec {L : Language} (h : L ∈ P) :
@@ -50,8 +50,8 @@ theorem answer_encodings_distinct {f : Word → Bool}
 theorem complement_iff (L : Language) : Lᶜ ∈ P ↔ L ∈ P := by
   constructor
   · intro h
-    simpa only [compl_compl] using Lax554803Proofs.closed_under_complement Lᶜ h
-  · exact Lax554803Proofs.closed_under_complement L
+    simpa only [compl_compl] using Lax888664Proofs.closed_under_complement Lᶜ h
+  · exact Lax888664Proofs.closed_under_complement L
 
 section FiniteAlphabet
 
@@ -234,10 +234,10 @@ theorem nontrivial_language_in_P :
 /-- Independently check complement closure directly in the elementary-tape
 definition, by exchanging accepting and rejecting states. -/
 theorem singleTape_direct_complement (L : Language)
-    (h : L ∈ Lax554803.MachineModels.SingleTapeP) :
-    Lᶜ ∈ Lax554803.MachineModels.SingleTapeP := by
+    (h : L ∈ Lax888664.MachineModels.SingleTapeP) :
+    Lᶜ ∈ Lax888664.MachineModels.SingleTapeP := by
   obtain ⟨M, p, hM⟩ := h
-  let N : Lax554803.MachineModels.SingleTape :=
+  let N : Lax888664.MachineModels.SingleTape :=
     { M with accept := fun q ↦ !(M.accept q) }
   refine ⟨N, p, fun w ↦ ?_⟩
   obtain ⟨c, hr, hh, ha⟩ := hM w
@@ -248,11 +248,11 @@ theorem singleTape_direct_complement (L : Language)
 
 /-- The conventional single-tape class contains a language with both answers. -/
 theorem nontrivial_language_in_singleTapeP :
-    ∃ L : Language, L ∈ Lax554803.MachineModels.SingleTapeP ∧
+    ∃ L : Language, L ∈ Lax888664.MachineModels.SingleTapeP ∧
       ([] : Word) ∉ L ∧ [false] ∈ L := by
   obtain ⟨L, hL, hn, hy⟩ := nontrivial_language_in_P
   refine ⟨L, ?_, hn, hy⟩
-  exact Lax554803Proofs.StackToTape.P_subset_singleTapeP hL
+  exact Lax888664Proofs.StackToTape.P_subset_singleTapeP hL
 
 #print axioms operational_spec
 #print axioms required_output_is_terminal
@@ -261,17 +261,17 @@ theorem nontrivial_language_in_singleTapeP :
 #print axioms complement_iff
 #print axioms reachable_alphabet_finite
 #print axioms nontrivial_language_in_P
-#print axioms Lax554803.PolynomialTime.P
-#print axioms Lax554803Proofs.negateOutput
-#print axioms Lax554803Proofs.closed_under_complement
-#print axioms Lax554803.MachineModels.SingleTapeP
-#print axioms Lax554803Proofs.FiniteAlphabet.computer
-#print axioms Lax554803Proofs.StackToTape.P_subset_singleTapeP
-#print axioms Lax554803Proofs.TapeToStack.singleTapeP_subset_P
-#print axioms Lax554803Proofs.ModelEquivalence.finiteStackP_eq_P
-#print axioms Lax554803Proofs.ModelEquivalence.singleTapeP_eq_P_closed
-#print axioms Lax554803Proofs.ModelEquivalence.singleTapeP_eq_P
-#print axioms Lax554803Proofs.ModelEquivalence.singleTape_closed_under_complement
+#print axioms Lax888664.PolynomialTime.P
+#print axioms Lax888664Proofs.negateOutput
+#print axioms Lax888664Proofs.closed_under_complement
+#print axioms Lax888664.MachineModels.SingleTapeP
+#print axioms Lax888664Proofs.FiniteAlphabet.computer
+#print axioms Lax888664Proofs.StackToTape.P_subset_singleTapeP
+#print axioms Lax888664Proofs.TapeToStack.singleTapeP_subset_P
+#print axioms Lax888664Proofs.ModelEquivalence.finiteStackP_eq_P
+#print axioms Lax888664Proofs.ModelEquivalence.singleTapeP_eq_P_closed
+#print axioms Lax888664Proofs.ModelEquivalence.singleTapeP_eq_P
+#print axioms Lax888664Proofs.ModelEquivalence.singleTape_closed_under_complement
 #print axioms singleTape_direct_complement
 #print axioms nontrivial_language_in_singleTapeP
 

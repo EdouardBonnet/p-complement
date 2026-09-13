@@ -1,4 +1,4 @@
-import Lax554803.MachineModels
+import Lax888664.MachineModels
 
 /-!
 ---
@@ -10,11 +10,11 @@ coincide. Both simulations include polynomial bounds for input conversion,
 execution, and final output conversion.
 -/
 
-namespace Lax554803.ModelEquivalence
+namespace Lax888664.ModelEquivalence
 
 open PolynomialTime MachineModels
 
 /-- The elementary single-tape and stack definitions give the same class P. -/
 axiom singleTapeP_eq_P : SingleTapeP = P
 
-end Lax554803.ModelEquivalence
+end Lax888664.ModelEquivalence

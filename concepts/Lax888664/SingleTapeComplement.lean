@@ -1,4 +1,4 @@
-import Lax554803.MachineModels
+import Lax888664.MachineModels
 
 /-!
 ---
@@ -8,7 +8,7 @@ type: theorem
 The elementary single-tape class $\mathrm{P}$ is closed under complement.
 -/
 
-namespace Lax554803.SingleTapeComplement
+namespace Lax888664.SingleTapeComplement
 
 open PolynomialTime MachineModels
 
@@ -16,4 +16,4 @@ open PolynomialTime MachineModels
 axiom closed_under_complement (L : Language) :
   L ∈ SingleTapeP → Lᶜ ∈ SingleTapeP
 
-end Lax554803.SingleTapeComplement
+end Lax888664.SingleTapeComplement

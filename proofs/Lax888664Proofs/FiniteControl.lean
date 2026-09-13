@@ -1,9 +1,9 @@
-import Lax554803Proofs.Time
-import Lax554803.MachineModels
+import Lax888664Proofs.Time
+import Lax888664.MachineModels
 
 /-! Restrict a finitely supported elementary machine to an actual finite state type. -/
 
-namespace Lax554803Proofs.FiniteControl
+namespace Lax888664Proofs.FiniteControl
 
 open Turing Time
 
@@ -43,4 +43,4 @@ theorem halted (c : TM0.Cfg Γ {q // q ∈ S})
   rw [h] at he
   exact Option.map_eq_none_iff.mp he
 
-end Lax554803Proofs.FiniteControl
+end Lax888664Proofs.FiniteControl

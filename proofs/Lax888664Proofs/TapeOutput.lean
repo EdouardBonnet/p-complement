@@ -1,8 +1,10 @@
-import Lax554803Proofs.FiniteControl
+import Lax888664Proofs.FiniteControl
+
+set_option backward.isDefEq.respectTransparency false
 
 /-! Turn a Boolean read from the final tape square into a conventional accepting state. -/
 
-namespace Lax554803Proofs.TapeOutput
+namespace Lax888664Proofs.TapeOutput
 
 open Turing Time
 
@@ -63,13 +65,13 @@ theorem supports {S : Finset Q} (hS : TM0.Supports M (S : Set Q)) :
     cases he : M q a with
     | none =>
       have hp : (Sum.inr (read q a), TM0.Stmt.write a) = (q', act) :=
-        Option.some.inj (by simpa only [program, he] using h)
+        Option.some.inj (by simpa only [program, he] using! h)
       cases hp
       cases read q a <;> simp [labels]
     | some p =>
       rcases p with ⟨r, instr⟩
       have hp : (Sum.inl r, instr) = (q', act) :=
-        Option.some.inj (by simpa only [program, he] using h)
+        Option.some.inj (by simpa only [program, he] using! h)
       cases hp
       have hr := hS.2 he hq'
       simp [labels]
@@ -79,17 +81,17 @@ theorem supports {S : Finset Q} (hS : TM0.Supports M (S : Set Q)) :
 configuration yields an ordinary finite single-tape decider, with one extra step. -/
 theorem of_supported [Fintype Γ] (S : Finset Q) (hS : TM0.Supports M (S : Set Q))
     (input : Bool ↪ Γ) (hi : ∀ b, input b ≠ default) (p : Polynomial ℕ)
-    (L : Lax554803.PolynomialTime.Language)
+    (L : Lax888664.PolynomialTime.Language)
     (h : ∀ w : List Bool, ∃ c : TM0.Cfg Γ Q,
       Within (TM0.step M) (p.eval w.length) (TM0.init (w.map input)) c ∧
       TM0.step M c = none ∧ (read c.q c.Tape.head = true ↔ w ∈ L)) :
-    L ∈ Lax554803.MachineModels.SingleTapeP := by
+    L ∈ Lax888664.MachineModels.SingleTapeP := by
   classical
   let W := program M read
   let S' := labels S
   have hS' : TM0.Supports W (S' : Set (Sum Q Bool)) := supports M read hS
   letI := FiniteControl.initial W S' hS'
-  let N : Lax554803.MachineModels.SingleTape :=
+  let N : Lax888664.MachineModels.SingleTape :=
     { Γ := Γ
       Q := {q // q ∈ S'}
       input := input
@@ -110,4 +112,4 @@ theorem of_supported [Fintype Γ] (S : Finset Q) (hS : TM0.Supports M (S : Set Q
     change (c'.q.val.elim (fun _ ↦ false) id = true) ↔ w ∈ L
     simpa only [hq, Sum.elim_inr, id_eq] using ha
 
-end Lax554803Proofs.TapeOutput
+end Lax888664Proofs.TapeOutput
