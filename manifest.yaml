@@ -7,7 +7,6 @@ authors:
   - name: Édouard Bonnet
   - name: Codex 5.6 and 6
 bibEntries: []
-supersedes: lax-554803
 issue:
   repositoryId: 1320232165
   number: 106
